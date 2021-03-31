@@ -105,14 +105,6 @@ class Maze
                 for (int i = 0; i < 4; i++)
                     wallSet.insert({x + 1, y, i});
             }
-            // else if 
-            // (
-            //     (y == 0 && wall[2] == 0) || 
-            //     (x == 0 && wall[2] == 1) || 
-            //     (x == rows - 1 && wall[2] == 2) ||
-            //     (y == cols - 1 && wall[2] == 3)
-            // )
-            //     wallSet.erase(wall);
             
             wallSet.erase(wall);
             

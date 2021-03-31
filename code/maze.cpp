@@ -50,24 +50,13 @@ int test()
         maze.wallSet = maze.ret.wallSet;
         maze.cellSet = maze.ret.cellSet;
     }
-    
-    // for (int i = 0; i < rows; i++)
-    // {
-    //     for (int j = 0; j < cols; j++)
-    //     {
-    //         cout << maze.G[i][j].top << " ";
-    //         cout << maze.G[i][j].bottom << " ";
-    //         cout << maze.G[i][j].left << " ";
-    //         cout << maze.G[i][j].right << " ";
-    //         cout << "\n";
-    //     }
-    // }
 
     for(int i = 0; i < 2*rows; i++)
     {
         cout << "_";
     }
     cout << endl;
+    
     for (int i = 0; i < rows; i++)
     {
         cout << "|";
@@ -75,9 +64,11 @@ int test()
         {
             cell c = maze.G[i][j];
             cout << (c.bottom == 0 ? " " : "_");
+
             if (c.right == 0)
                 cout << " ";
-            else cout << "|";
+            else 
+                cout << "|";
         }
         cout << endl;
     }

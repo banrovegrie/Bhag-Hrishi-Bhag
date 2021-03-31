@@ -1,70 +1,51 @@
 #include "main.h"
 
-void drawSquare(GLfloat a)
+void drawlines(GLfloat a, GLfloat b, GLfloat x, GLfloat y)
 {
-    GLfloat vertices[] = {
-        // front face
-        -a/2, +a/2, +a/2, // top left
-        +a/2, +a/2, +a/2, // top right
-        +a/2, -a/2, +a/2, // bottom right
-        -a/2, -a/2, +a/2, // bottom left
-    };
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-
-    glVertexPointer(3, GL_FLOAT, 0, vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
+    glBegin(GL_LINES);
+    {
+        glVertex2f(a, b);
+        glVertex2f(x, y);
+    }
+    glEnd();
 }
 
 /* Draw Stuff */
-void draw()
+void draw(vector<vector<cell> > maze, GLfloat size = (float)SIZE)
 {
     int rows = ROWS, cols = COLS;
-    vector<vector<cell> > maze = getMaze();
-    
+
     for (int i = 0; i < rows; i++) 
     {
         for (int j = 0; j < cols; j++) 
         {
             if (maze[i][j].bottom) 
             {
-                // glColor4f(0, .2, 0, 0);
-                glPushMatrix();
-                glTranslatef(j * 2 - 2, 0, i * 2);
-                glScalef(1, 1, 0.25);   // Added here
-                drawSquare(2);
-                glPopMatrix();
+                drawlines(
+                    i * size + size, j * size,
+                    i * size + size, j * size + size
+                );
             }
             if (maze[i][j].top) 
             {
-                // glColor4f(0, .2, 0, 0);
-                glPushMatrix();
-                glTranslatef(j * 2 + 2, 0, i * 2);
-                glScalef(1, 1, 0.25);   // Added here
-                drawSquare(2);
-                glPopMatrix();
+                drawlines(
+                    i * size, j * size,
+                    i * size, j * size + size
+                );
             }
             if (maze[i][j].right) 
             {
-                // glColor4f(0, .2, 0, 0);
-                glPushMatrix();
-                glTranslatef(j * 2, 0, i * 2 + 2);
-                glScalef(0.25, 1, 1);   // Added here
-                drawSquare(2);
-                glPopMatrix();
+                drawlines(
+                    i * size, j * size + size,
+                    i * size + size, j * size + size
+                );
             }
             if (maze[i][j].left) 
             {
-                // glColor4f(0, .2, 0, 0);
-                glPushMatrix();
-                glTranslatef(j * 2, 0, i * 2 - 2);
-                glScalef(0.25, 1, 1);  // Added here
-                drawSquare(2);
-                glPopMatrix();
+                drawlines(
+                    i * size, j * size,
+                    i * size + size, j * size
+                );
             }
         }
     }
@@ -131,7 +112,7 @@ int main()
     */
     glLoadIdentity();
     /* Essentially set the coordinate system */
-    glOrtho(-(int)X, (int)X, -(int)Y, (int)Y, -(int)Z, (int)Z);
+    glOrtho(-(int)sX, (int)eX, -(int)sY, (int)eY, -(int)Z, (int)Z);
     /*
         Default matrix mode: modelview matrix 
         defines how your objects are transformed 
@@ -146,6 +127,10 @@ int main()
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
 
+    // Making the maze
+    int rows = ROWS, cols = COLS;
+    vector<vector<cell> > maze = getMaze();
+
     /* Render here */
     while(!glfwWindowShouldClose(window))
     {
@@ -153,11 +138,10 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-        draw();
+        draw(maze);
 
         // glPushMatrix();
         // { 
-        //     drawSquare(100); 
         // }
         // glPopMatrix();
 

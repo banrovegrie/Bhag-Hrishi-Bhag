@@ -16,9 +16,13 @@ using namespace std;
 #define SCREEN_WIDTH  1000
 #define ROWS 20
 #define COLS 20
-#define X 100
+#define sX 10
+#define eX 190
+#define sY 10
+#define eY 190
 #define Y 100
 #define Z 100
+#define SIZE 9
 
 struct cell
 {
