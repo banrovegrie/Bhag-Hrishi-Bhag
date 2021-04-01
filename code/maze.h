@@ -63,6 +63,7 @@ class Maze
             set<vector<int> > cellSet
         )
         {
+            srand(time(0));
             auto r = rand() % wallSet.size(); 
             auto wall = *select_random(wallSet, r);
             

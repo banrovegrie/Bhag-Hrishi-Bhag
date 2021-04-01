@@ -1,17 +1,31 @@
 #include "main.h"
 
+/* Record the last Input */
+int INPUT = 0;
+int MOVE = 0;
+
+/* Draw Lines */
 void drawlines(GLfloat a, GLfloat b, GLfloat x, GLfloat y)
 {
     glBegin(GL_LINES);
     {
+        glColor3f(1.0f, 1.0f, 1.0f);
         glVertex2f(a, b);
         glVertex2f(x, y);
     }
     glEnd();
 }
 
-/* Draw Stuff */
-void draw(vector<vector<cell> > maze, GLfloat size = (float)SIZE)
+/* Render Function */
+void draw
+(
+    vector<vector<cell> > maze,
+    pos &hrishi, pos &shreyas, 
+    pos &task1, pos &task2,
+    pos &c, pos &b,
+    pair<int, int> next[ROWS][COLS][ROWS][COLS], 
+    GLfloat size = (float)SIZE
+)
 {
     int rows = ROWS, cols = COLS;
 
@@ -49,6 +63,16 @@ void draw(vector<vector<cell> > maze, GLfloat size = (float)SIZE)
             }
         }
     }
+    
+    /* Draw my Sprites*/
+    drawSprites(
+        hrishi, shreyas, 
+        task1, task2, c, b,
+        maze, INPUT, 
+        MOVE, next
+    );
+    INPUT = 0;
+
     return;
 }
 
@@ -64,14 +88,35 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
             case GLFW_KEY_ESCAPE:
                 glfwSetWindowShouldClose(window, true);
                 break;
+            case GLFW_KEY_W:
+                // up
+                INPUT = 1;
+                break;
+            case GLFW_KEY_S:
+                // down
+                INPUT = 2;
+                break;
+            case GLFW_KEY_A:
+                // left
+                INPUT = 3;
+                break;
+            case GLFW_KEY_D:
+                // right
+                INPUT = 4;
+                break;
         }       
     }
 }
 
 int main()
 {
+    /* Initializing major variables */
+    pos hrishi, shreyas, task1, task2, coin, bomb;
+
     /* OpenGL Initialisation */
     glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
     /* Create GLFW Window */
     GLFWwindow* window = glfwCreateWindow(
@@ -130,6 +175,11 @@ int main()
     // Making the maze
     int rows = ROWS, cols = COLS;
     vector<vector<cell> > maze = getMaze();
+    pair<int, int> next[ROWS][COLS][ROWS][COLS];
+    findDist(maze, next);
+
+    /* Initializing Sprites*/
+    initializeSprites(hrishi, shreyas, task1, task2, coin, bomb);
 
     /* Render here */
     while(!glfwWindowShouldClose(window))
@@ -138,13 +188,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-        draw(maze);
-
-        // glPushMatrix();
-        // { 
-        // }
-        // glPopMatrix();
-
+        draw(maze, hrishi, shreyas, task1, task2, coin, bomb, next);
+        
         // call events and swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();

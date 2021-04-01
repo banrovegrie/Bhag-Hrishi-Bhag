@@ -1,2 +1,4 @@
-# Bhag-Hrishi-Bhag
-English Translation: Run Hrishi Run
+## Instructions
+
+    1. Use `./run` to begin.
+    2. Use W, A, S, D to move.
