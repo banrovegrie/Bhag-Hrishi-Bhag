@@ -1,4 +1,4 @@
 ## Instructions
 
-    1. Use `./run` to begin.
-    2. Use W, A, S, D to move.
+1. Use `./run` to begin.
+2. Use W, A, S, D to move.
