@@ -171,6 +171,7 @@ int main()
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
+    glEnable(GL_LIGHTING);
 
     // Making the maze
     int rows = ROWS, cols = COLS;
